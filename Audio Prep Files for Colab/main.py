@@ -16,18 +16,18 @@ warnings.filterwarnings('ignore')
 # Import color encoder which uses siamese networks
 from model import train_color_encoder
 
-
-
-
-## Prepare positive and negative pais of data samples
+## Prepare positive and negative pairs of data samples
 
 
 # Prepare data for different shapes but same colors
 
 dir = os.getcwd() + "/shapes/"
 
-images = []
-y_col = []
+images = [] # all images
+y_col = [] # this is for storing the enums which correlate to the images list. 
+#if y_col[4]=0 then images[4] is red 
+
+# if we wanted to identify shape we would do the same for shape
 
 for root, dirs, files in os.walk(dir, topdown=False):
     for name in files:
@@ -42,15 +42,20 @@ for root, dirs, files in os.walk(dir, topdown=False):
                 y_col.append(2)
 
 y_col = np.array(y_col)
+print("image before np.array")
+print(images[0])
 images = np.array(images)
+print("image after np.array")
+print(images[0])
 
 
 
 # Generate positive samples
 
 red_im = images[np.where(y_col==0)]
-green_im = images[np.where(y_col==1)]
-blue_im = images[np.where(y_col==2)]
+blue_im = images[np.where(y_col==1)]
+green_im = images[np.where(y_col==2)]
+
 
 # Test images
 test_red_im = red_im[50:]
@@ -63,8 +68,8 @@ green_im = green_im[:20]
 blue_im = blue_im[:20]
 
 
-
-positive_red = list(itertools.combinations(red_im, 2))
+# turns 20 input samples to 190 !!
+positive_red = list(itertools.combinations(red_im, 2)) # all pairs combination 20*19/2
 
 positive_blue = list(itertools.combinations(blue_im, 2))
 
